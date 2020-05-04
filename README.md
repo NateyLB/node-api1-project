@@ -68,7 +68,7 @@ When the client makes a `POST` request to `/api/users`:
   - respond with HTTP status code `500`.
   - return the following JSON object: `{ errorMessage: "The users information could not be retrieved." }`. -->
 
-When the client makes a `GET` request to `/api/users/:id`:
+<!-- When the client makes a `GET` request to `/api/users/:id`:
 
 - If the _user_ with the specified `id` is not found:
 
@@ -77,31 +77,31 @@ When the client makes a `GET` request to `/api/users/:id`:
 
 - If there's an error in retrieving the _user_ from the database:
   - respond with HTTP status code `500`.
-  - return the following JSON object: `{ errorMessage: "The user information could not be retrieved." }`.
+  - return the following JSON object: `{ errorMessage: "The user information could not be retrieved." }`. -->
 
 When the client makes a `DELETE` request to `/api/users/:id`:
 
-- If the _user_ with the specified `id` is not found:
+<!-- - If the _user_ with the specified `id` is not found:
 
   - respond with HTTP status code `404` (Not Found).
   - return the following JSON object: `{ message: "The user with the specified ID does not exist." }`.
 
 - If there's an error in removing the _user_ from the database:
   - respond with HTTP status code `500`.
-  - return the following JSON object: `{ errorMessage: "The user could not be removed" }`.
+  - return the following JSON object: `{ errorMessage: "The user could not be removed" }`. -->
 
 When the client makes a `PUT` request to `/api/users/:id`:
 
-- If the _user_ with the specified `id` is not found:
+<!-- - If the _user_ with the specified `id` is not found:
 
   - respond with HTTP status code `404` (Not Found).
-  - return the following JSON object: `{ message: "The user with the specified ID does not exist." }`.
+  - return the following JSON object: `{ message: "The user with the specified ID does not exist." }`. -->
 
 - If the request body is missing the `name` or `bio` property:
-
+<!-- 
   - respond with HTTP status code `400` (Bad Request).
-  - return the following JSON response: `{ errorMessage: "Please provide name and bio for the user." }`.
-
+  - return the following JSON response: `{ errorMessage: "Please provide name and bio for the user." }`. -->
+<!-- 
 - If there's an error when updating the _user_:
 
   - respond with HTTP status code `500`.
@@ -111,7 +111,7 @@ When the client makes a `PUT` request to `/api/users/:id`:
 
   - update the user document in the database using the new information sent in the `request body`.
   - respond with HTTP status code `200` (OK).
-  - return the newly updated _user document_.
+  - return the newly updated _user document_. -->
 
 ## Stretch Problems
 

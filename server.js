@@ -6,6 +6,7 @@ const shortid = require('shortid'); //ID generator
 const server = express();
 
 server.use(express.json()); // teaches express how to read JSON from the body
+server.use(cors()) //CORS
 
 const users= [
     {
@@ -53,11 +54,20 @@ server.get("/api/users", (req, res) => {
 
   server.get("/api/users/:id", function (req, res) {
     const id = req.params.id;
-
-
-
     const user = users.filter(element => element.id === id)
-    res.status(200).json(user);
+    const checkID = users.filter(element => element.id !== id)
+    if(checkID.length == users.length){
+        res.status(404).json({ message: "The user with the specified ID does not exist." });
+    }
+    else{
+        res.status(200).json(user);
+    }
+    const checkName = users.filter(element => element.name !== user.name)
+    if(checkName.length == users.length){
+        res.status(500).json({ errorMessage: "The user information could not be retrieved." });
+
+    }   
+    
   });
 
   server.post("/api/users", function (req, res) {
@@ -81,6 +91,40 @@ server.get("/api/users", (req, res) => {
     
   });
 
+  server.put("/api/users/:id", function(req, res) {
+    const id = req.params.id;
+    const checkID = users.filter(element => element.id !== id)
+    if(checkID.length == users.length){
+        res.status(404).json({ message: "The user with the specified ID does not exist." });
+
+    }
+    else{
+        if(req.body.name && req.body.bio){
+        users.forEach(element =>{
+            if(element.id == id){
+                element.name = req.body.name;
+                element.bio = req.body.bio;
+            }
+        })
+        }
+        else{
+            res.status(400).json({ errorMessage: "Please provide name and bio for the user." });
+        }
+    }
+
+    users.forEach(element =>{
+        if(element.id == id && element.name == req.body.name && element.bio == req.body.bio){
+            res.status(200).json(element);
+        }
+    })
+
+    const checkUser = users.filter(element => element.id == id && element.name == req.body.name && element.bio == req.body.bio);
+    if(users.length == checkUser.length){
+        res.status(500).json({ errorMessage: "The user information could not be modified." })
+    }
+
+  });
+
   server.delete("/api/users/:id", function (req, res) {
     const id = req.params.id;
     const checkID = users.filter(element => element.id !== id)
@@ -96,6 +140,11 @@ server.get("/api/users", (req, res) => {
         }
     })
 }
+users.forEach(element =>{
+    if(element.id == id){
+        res.status(500).json({ errorMessage: "The user could not be removed" });
+    }
+})
  
   });
 
