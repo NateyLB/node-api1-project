@@ -1,6 +1,7 @@
 // import express from 'express'; // ES2015 Modules
 const express = require("express"); // CommonJS Modules
 const shortid = require('shortid'); //ID generator
+const cors = require('cors'); //CORS
 
 
 const server = express();
@@ -91,7 +92,7 @@ server.get("/api/users", (req, res) => {
     
   });
 
-  server.put("/api/users/:id", function(req, res) {
+  server.patch("/api/users/:id", function(req, res) {
     const id = req.params.id;
     const checkID = users.filter(element => element.id !== id)
     if(checkID.length == users.length){
@@ -102,8 +103,12 @@ server.get("/api/users", (req, res) => {
         if(req.body.name && req.body.bio){
         users.forEach(element =>{
             if(element.id == id){
-                element.name = req.body.name;
-                element.bio = req.body.bio;
+                if(req.body.name){
+                    element.name = req.body.name;
+                }
+                if(req.body.bio){
+                element.bio = req.body.bio;    
+                }
             }
         })
         }
@@ -113,7 +118,7 @@ server.get("/api/users", (req, res) => {
     }
 
     users.forEach(element =>{
-        if(element.id == id && element.name == req.body.name && element.bio == req.body.bio){
+        if(element.id == id && element.name == req.body.name || element.bio == req.body.bio){
             res.status(200).json(element);
         }
     })
