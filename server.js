@@ -42,12 +42,20 @@ const users= [
 ]
 
 server.get("/api/users", (req, res) => {
+   if(users){
     res.status(200).json(users);
+   }
+   else{
+    res.status(500).json({ errorMessage: "The users information could not be retrieved." });
+   }
 
   });
 
   server.get("/api/users/:id", function (req, res) {
     const id = req.params.id;
+
+
+
     const user = users.filter(element => element.id === id)
     res.status(200).json(user);
   });
@@ -59,18 +67,35 @@ server.get("/api/users", (req, res) => {
         bio: req.body.bio
     }
 
-    users.push(user);
-    res.status(201).json(users).send('Post Success');
+    if(user.id && user.bio){
+        users.push(user);
+        res.status(201).json(users);
+    }
+    else{
+        res.status(400).json({ errorMessage: "Please provide name and bio for the user." });
+    }
+
+    if(users[users.length-1].id !== user.id ){
+        res.status(500).json({ errorMessage: "There was an error while saving the user to the database" });
+    }
+    
   });
 
   server.delete("/api/users/:id", function (req, res) {
     const id = req.params.id;
+    const checkID = users.filter(element => element.id !== id)
+    if(checkID.length == users.length){
+        res.status(404).json({ message: "The user with the specified ID does not exist." });
+
+    }
+    else{
     users.forEach((element, index)=>{
         if(element.id === id){
             res.status(200).json(element);
             users.splice(index, 1)
         }
     })
+}
  
   });
 
